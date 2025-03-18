@@ -7,7 +7,7 @@ export const validate = (schema: AnyZodObject) => {
       await schema.parseAsync({
         body: req.body,
         query: req.query,
-        params: req.params
+        params: req.params,
       });
       next();
     } catch (error) {
@@ -15,13 +15,13 @@ export const validate = (schema: AnyZodObject) => {
         return res.status(400).json({
           status: 'error',
           message: 'Validation failed',
-          errors: error.errors.map(err => ({
+          errors: error.errors.map((err) => ({
             field: err.path.join('.'),
-            message: err.message
-          }))
+            message: err.message,
+          })),
         });
       }
       next(error);
     }
   };
-}; 
+};

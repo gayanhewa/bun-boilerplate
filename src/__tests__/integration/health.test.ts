@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeAll, afterAll } from 'bun:test';
+import { describe, expect, it } from 'bun:test';
 import supertest from 'supertest';
 import app from '../../index';
 
@@ -10,7 +10,7 @@ describe('Health API Integration', () => {
     expect(response.status).toBe(200);
     expect(response.body).toEqual({
       status: 'ok',
-      message: 'Server is healthy'
+      message: 'Server is healthy',
     });
   });
 
@@ -21,7 +21,7 @@ describe('Health API Integration', () => {
       status: 'ok',
       message: 'Server is healthy',
       timestamp: expect.any(String),
-      uptime: expect.any(Number)
+      uptime: expect.any(Number),
     });
   });
 
@@ -34,9 +34,9 @@ describe('Health API Integration', () => {
       errors: expect.arrayContaining([
         expect.objectContaining({
           field: 'query.includeDetails',
-          message: expect.any(String)
-        })
-      ])
+          message: expect.any(String),
+        }),
+      ]),
     });
   });
-}); 
+});
