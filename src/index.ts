@@ -1,6 +1,7 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import { validate } from './middleware/validate.js';
-import { healthCheckSchema, type HealthCheckQuery } from './schemas/health.schema.js';
+import { healthCheckSchema } from './schemas/health.schema.js';
+import { HealthHandler } from './handlers/health.handler.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -8,33 +9,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 // Test route with validation
-app.get(
-  '/api/health',
-  validate(healthCheckSchema),
-  (
-    req: Request<
-      Record<string, never>,
-      Record<string, never>,
-      Record<string, never>,
-      HealthCheckQuery
-    >,
-    res: Response
-  ) => {
-    const response = {
-      status: 'ok',
-      message: 'Server is healthy',
-    };
-
-    if (req.query.includeDetails) {
-      Object.assign(response, {
-        timestamp: new Date().toISOString(),
-        uptime: process.uptime(),
-      });
-    }
-
-    res.json(response);
-  }
-);
+app.get('/api/health', validate(healthCheckSchema), HealthHandler.check);
 
 // Start server
 app.listen(port, () => {
